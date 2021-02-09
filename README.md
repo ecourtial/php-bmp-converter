@@ -11,8 +11,8 @@
 ## Description
 
 * This small library allows you to parse a standard Windows BMP file (generic information + pixel by pixel).
-* No third party libraries required. It is only based on native PHP functions (with the _gd_ extension required).
-* It also provides a basic feature to edit an existing BMP file.
+* No third party libraries required. It is only based on native PHP functions.
+* It also provides a basic feature to edit an existing BMP file (with the _gd_ extension required).
 
 ## Limitations
 
