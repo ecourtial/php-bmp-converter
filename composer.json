@@ -1,0 +1,36 @@
+{
+  "name": "ecourtial/php-bmp-parser",
+  "keywords": ["php", "bmp"],
+  "description": "A library to parse Windows Bitmap files",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Eric COURTIAL <e.courtial30@gmail.com>",
+      "homepage": "https://github.com/ecourtial/php-bmp-parser"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "ext-gd": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ecourtial\\PhpBmpParser\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5",
+    "phpstan/phpstan": "^0.12.71",
+    "phpstan/phpstan-deprecation-rules": "^0.12.6",
+    "phpstan/phpstan-phpunit": "^0.12.17",
+    "phpstan/phpstan-strict-rules": "^0.12.9",
+    "infection/infection": "^0.21.0",
+    "wizaplace/phpcs": "^1.3",
+    "ondram/ci-detector": "^3.5"
+  }
+}
