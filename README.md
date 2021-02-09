@@ -7,6 +7,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/ecourtial/php-bmp-parser/graphs/commit-activity)
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://GitHub.com/ecourtial/php-bmp-parser)
 [![GitHub license](https://img.shields.io/github/license/ecourtial/php-bmp-parser)](https://github.com/ecourtial/php-bmp-parser/blob/master/LICENSE)
+![PHP Version](https://img.shields.io/packagist/php-v/ecourtial/php-bmp-parser)
 
 ## Description
 
