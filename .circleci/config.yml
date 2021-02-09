@@ -1,0 +1,147 @@
+version: '2.1'
+
+## EXECUTORS
+executors:
+  php74:
+    docker:
+      - image: php:7.4-cli
+    working_directory: ~/repo
+
+## COMMANDS
+commands:
+
+  checkout-alpine:
+    description: Install requirements for checkout
+    steps:
+      - run:
+          name: "Install requirements for checkout"
+          command: |
+            apt-get update && apt-get install --no-install-recommends -y git unzip libzip-dev libpng-dev libjpeg-dev openssh-client curl wget \
+            && wget -q -O /usr/local/bin/install-php-extensions https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions \
+                || (echo "Failed while downloading php extension installer!"; exit 1) \
+            && chmod uga+x /usr/local/bin/install-php-extensions && sync && install-php-extensions \
+                gd \
+                xdebug \
+            && echo "xdebug.mode=coverage" >> ${PHP_INI_DIR}/conf.d/docker-php-ext-xdebug.ini;
+      - checkout
+
+  store-composer-cache:
+    description: "Store vendor folder in CircleCI cache"
+    steps:
+      - checkout-alpine
+      - composer
+      - save_cache:
+          key: composer-{{ checksum "composer.json" }}
+          paths:
+            - ./vendor
+      - persist_to_workspace:
+          root: .
+          paths:
+            - vendor
+
+  restore-composer-cache:
+    description: "Restore vendor folder from CircleCI cache"
+    steps:
+      - checkout
+      - restore_cache:
+          key: composer-{{ checksum "composer.json" }}
+
+  composer:
+    steps:
+      - run:
+          name: composer
+          command: |
+            if [[ ! -f vendor/autoload.php ]]; then
+                curl https://getcomposer.org/composer-1.phar --location --silent  --output /usr/bin/composer; \
+                chmod +x /usr/bin/composer; \
+                composer install --no-progress --no-interaction; \
+            fi
+
+  phpcs:
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: phpcs
+          command: make phpcs
+
+  phpstan:
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: phpstan
+          command: make phpstan
+
+  infection:
+    steps:
+      - checkout-alpine
+      - attach_workspace:
+          at: .
+      - run:
+          name: infection
+          command: mkdir -p var/infection && make infection
+
+  phpunit:
+    steps:
+      - checkout-alpine
+      - attach_workspace:
+          at: .
+      - run:
+          name: phpunit
+          command: make test
+
+## JOBS
+jobs:
+  composer74:
+    executor: php74
+    steps:
+      - store-composer-cache
+
+  phpstan74:
+    executor: php74
+    steps:
+      - restore-composer-cache
+      - phpstan
+
+  phpcs74:
+    executor: php74
+    steps:
+      - restore-composer-cache
+      - phpcs
+
+  phpunit74:
+    executor: php74
+    steps:
+      - restore-composer-cache
+      - phpunit
+      - run:
+          name: push coverage
+          command: |
+            curl -s https://codecov.io/bash | bash -s -- -c -F aFlag -t ${CODECOV_TOKEN} -n ${CIRCLE_BUILD_NUM} -f var/phpunit/coverage.xml
+
+  infection74:
+    executor: php74
+    steps:
+      - restore-composer-cache
+      - infection
+
+## WORKFLOWS
+workflows:
+  Code quality PHP 7.4:
+    jobs:
+      - composer74
+      - phpcs74:
+          requires:
+            - composer74
+      - phpstan74:
+          requires:
+            - composer74
+      - phpunit74:
+          requires:
+            - composer74
+      - infection74:
+          requires:
+            - phpunit74

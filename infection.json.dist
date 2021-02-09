@@ -1,0 +1,18 @@
+{
+  "source": {
+    "directories": [
+      "src"
+    ]
+  },
+  "timeout": 10,
+  "logs": {
+    "text": "var/tmp-infection/infection.log",
+    "summary": "var/tmp-infection/summary.log",
+    "perMutator": "var/tmp-infection/per-mutator.md",
+    "badge": {
+        "branch": "master"
+    }
+  },
+  "tmpDir": "var/tmp-infection",
+  "testFramework":"phpunit"
+}
