@@ -39,7 +39,7 @@ class BmpParser
             'vreserved1/' .      //06-2b - reserved
             'vreserved2/' .      //08-2b - reserved
             'Vbitmap_start/' .   //10-4b - offset of where bmp pixel array can be found
-            'Vdib_size/' .      //14-4b - size of dib header
+            'Vdib_size/' .       //14-4b - size of dib header
             'Vwidth/' .          //18-4b - width on pixels
             'Vheight/' .         //22-4b - height in pixels
             'vcolor_planes/' .   //26-2b - number of color planes
