@@ -81,7 +81,11 @@ class PhpCoreTest extends TestCase
 
     public function testImageCreateTrueColorWithSuccess(): void
     {
-        static::assertTrue(is_resource(static::$core->imageCreateTrueColor(10, 10)));
+        if (PHP_VERSION <= 7.4) {
+            static::assertTrue(is_resource(static::$core->imageCreateTrueColor(10, 10)));
+        } else {
+            static::assertTrue(is_object(static::$core->imageCreateTrueColor(10, 10)));
+        }
     }
 
     public function testImageCreateTrueColorWithFailure(): void

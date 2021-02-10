@@ -15,4 +15,4 @@ test:
 	vendor/bin/phpunit --testdox
 
 infection:
-	vendor/bin/infection --min-msi=89
+	vendor/bin/infection --min-msi=85

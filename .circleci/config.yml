@@ -7,6 +7,11 @@ executors:
       - image: php:7.4-cli
     working_directory: ~/repo
 
+  php80:
+    docker:
+      - image: php:8.0-cli
+    working_directory: ~/repo
+
 ## COMMANDS
 commands:
 
@@ -52,7 +57,7 @@ commands:
           name: composer
           command: |
             if [[ ! -f vendor/autoload.php ]]; then
-                curl https://getcomposer.org/composer-1.phar --location --silent  --output /usr/bin/composer; \
+                curl https://getcomposer.org/composer-stable.phar --location --silent  --output /usr/bin/composer; \
                 chmod +x /usr/bin/composer; \
                 composer install --no-progress --no-interaction; \
             fi
@@ -128,6 +133,17 @@ jobs:
       - restore-composer-cache
       - infection
 
+  composer80:
+    executor: php80
+    steps:
+      - store-composer-cache
+
+  phpunit80:
+    executor: php80
+    steps:
+      - restore-composer-cache
+      - phpunit
+
 ## WORKFLOWS
 workflows:
   Code quality PHP 7.4:
@@ -145,3 +161,9 @@ workflows:
       - infection74:
           requires:
             - phpunit74
+  Code quality PHP 8.0:
+    jobs:
+      - composer80
+      - phpunit80:
+          requires:
+            - composer80

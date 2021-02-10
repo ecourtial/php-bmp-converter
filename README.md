@@ -7,12 +7,13 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/ecourtial/php-bmp-parser/graphs/commit-activity)
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://GitHub.com/ecourtial/php-bmp-parser)
 [![GitHub license](https://img.shields.io/github/license/ecourtial/php-bmp-parser)](https://github.com/ecourtial/php-bmp-parser/blob/master/LICENSE)
+![PHP Version](https://img.shields.io/packagist/php-v/ecourtial/php-bmp-parser)
 
 ## Description
 
 * This small library allows you to parse a standard Windows BMP file (generic information + pixel by pixel).
-* No third party libraries required. It is only based on native PHP functions (with the _gd_ extension required).
-* It also provides a basic feature to edit an existing BMP file.
+* No third party libraries required. It is only based on native PHP functions.
+* It also provides a basic feature to edit an existing BMP file (with the _gd_ extension required).
 
 ## Limitations
 
