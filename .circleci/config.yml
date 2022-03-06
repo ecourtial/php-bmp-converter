@@ -12,6 +12,11 @@ executors:
       - image: php:8.0-cli
     working_directory: ~/repo
 
+  php81:
+    docker:
+      - image: php:8.1-cli
+    working_directory: ~/repo
+
 ## COMMANDS
 commands:
 
@@ -144,6 +149,17 @@ jobs:
       - restore-composer-cache
       - phpunit
 
+  composer81:
+    executor: php81
+    steps:
+      - store-composer-cache
+
+  phpunit81:
+    executor: php81
+    steps:
+      - restore-composer-cache
+      - phpunit
+
 ## WORKFLOWS
 workflows:
   Code quality PHP 7.4:
@@ -167,3 +183,9 @@ workflows:
       - phpunit80:
           requires:
             - composer80
+  Code quality PHP 8.1:
+    jobs:
+      - composer81
+      - phpunit81:
+          requires:
+            - composer81
