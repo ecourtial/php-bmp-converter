@@ -97,7 +97,7 @@ class PhpCore
             $data = false;
         }
 
-        if (false === is_array($data) || 0 === count($data)) {
+        if (false === $data) {
             $error = "Impossible to splint the given string of type: '$what'";
             $error = $extra === '' ? $error : $error . ' at ' . $extra;
             $error .= " $msg";
